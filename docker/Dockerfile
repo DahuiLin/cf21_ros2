@@ -67,6 +67,8 @@ RUN apt-get update && \
     ./cmake-3.21.0-linux-x86_64.sh --skip-license --prefix=/usr/local && \
     rm cmake-3.21.0-linux-x86_64.sh
 
+COPY ../udev/* /etc/udev/rules.d/
+
 USER $USERNAME
 WORKDIR $HOME
 
@@ -107,6 +109,11 @@ RUN sudo apt install -y libxcb-xinerama0 libxcb-cursor0 \
 RUN sudo apt-get update \
 && git clone https://github.com/bitcraze/crazyflie-lib-python.git \
 && cd $HOME/crazyflie-lib-python \
+&& pip3 install -e .
+
+RUN sudo apt-get update \
+&& git clone https://github.com/bitcraze/crazyflie-clients-python.git \
+&& cd $HOME/crazyflie-clients-python \
 && pip3 install -e .
 
 # RUN sudo apt-get update \
