@@ -1,0 +1,6 @@
+[submodule "mocap_kalman_filter"]
+	path = mocap_kalman_filter
+	url = git@github.com:DahuiLin/mocap_kalman_filter.git
+[submodule "cf21_bridge_ros2"]
+	path = cf21_bridge_ros2
+	url = git@github.com:DahuiLin/cf21_bridge_ros2.git
