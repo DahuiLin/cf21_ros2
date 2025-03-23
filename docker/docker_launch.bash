@@ -14,6 +14,7 @@ docker run --privileged -it --rm \
     --volume /dev:/dev:rw \
     --volume $(pwd)/../mocap_kalman_filter:/home/isa/catkin_ws/src/mocap_kalman_filter:rw \
     --volume $(pwd)/../cf21_bridge_ros2:/home/isa/catkin_ws/src/cf21_bridge_ros2:rw \
+    --volume /home/dahuipc/Desktop/NonLinearMPC:/home/isa/catkin_ws/src/NonLinearMPC:rw \
     --env="XAUTHORITY=${XAUTH}" \
     --env=TERM=xterm-256color \
     ros_humble:latest \

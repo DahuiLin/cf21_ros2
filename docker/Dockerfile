@@ -22,7 +22,7 @@ RUN useradd -m $USERNAME && \
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     wget apt-utils sudo curl python3-vcstool \
-		git\
+	git\
         sudo \
         python3-pip \
         ipython3 \
@@ -30,14 +30,15 @@ RUN apt-get update && \
         python3-numpy \
         python3-scipy \
         python3-matplotlib \
-        python3-wheel \
-        python3-setuptools \
+	python3-setuptools \
+	python3-setuptools-scm \
         swig \
 	&& apt-get clean -q -y \
 	&& apt-get autoremove -q -y \
 	&& rm -rf /var/lib/apt/lists/*
 
-
+#RUN apt-get update \
+#&& python3 -m pip install --upgrade pip setuptools setuptools_scm wheel
 
 # set python3.8 as default
 # RUN sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
@@ -73,14 +74,6 @@ USER $USERNAME
 WORKDIR $HOME
 
 RUN sudo apt-get update \
-&& git clone https://github.com/casadi/casadi.git \
-&& cd casadi \
-&& mkdir build \
-&& cd build \
-&& cmake -DWITH_PYTHON3=ON -DWITH_PYTHON=ON -DWITH_QPOASES=ON -DWITH_LAPACK=ON -DWITH_BUILD_REQUIRED=ON .. \
-&& sudo make install -j4
-
-RUN sudo apt-get update \
 && git clone https://github.com/acados/acados.git \
 && cd acados && git submodule update --init --recursive \
 && mkdir -p build && cd build \
@@ -88,7 +81,7 @@ RUN sudo apt-get update \
 && sudo make install -j4 
 
 RUN sudo apt-get update \
-&& pip3 install -e $HOME/acados/interfaces/acados_template
+&& pip3 install -e ${HOME}/acados/interfaces/acados_template
 
 RUN sudo apt-get update \
 && git clone https://github.com/OctoMap/octomap.git \
