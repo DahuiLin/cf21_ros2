@@ -16,7 +16,7 @@ docker run --privileged -it --rm \
     --volume $(pwd)/../cf21_bridge_ros2:/home/isa/catkin_ws/src/cf21_bridge_ros2:rw \
     --volume /home/dahuipc/Desktop/My_path_trackers:/home/isa/catkin_ws/src/My_path_trackers:rw \
     --volume /home/dahuipc/Desktop/improved_LCCMWTP:/home/isa/improved_LCCMWTP:rw \
-    --volume /home/dahuipc/Desktop/uav_bridge:/home/isa/uav_bridge:rw \
+    --volume $(pwd)/../uav_bridge:/home/isa/catkin_ws/src/uav_bridge:rw \
     --env="XAUTHORITY=${XAUTH}" \
     --env=TERM=xterm-256color \
     ros_humble:latest \
