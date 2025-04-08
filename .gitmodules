@@ -4,3 +4,6 @@
 [submodule "cf21_bridge_ros2"]
 	path = cf21_bridge_ros2
 	url = git@github.com:DahuiLin/cf21_bridge_ros2.git
+[submodule "uav_bridge"]
+	path = uav_bridge
+	url = git@github.com:Robotics-Mechatronics-UMA/uav_bridge.git
