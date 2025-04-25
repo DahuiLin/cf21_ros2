@@ -22,20 +22,23 @@ RUN useradd -m $USERNAME && \
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     wget apt-utils sudo curl python3-vcstool \
-	git\
-        sudo \
-        python3-pip \
-        ipython3 \
-        python3-dev \
-        python3-numpy \
-        python3-scipy \
-        python3-matplotlib \
-	python3-setuptools \
-	python3-setuptools-scm \
-        swig \
+    git\
+    sudo \
+    python3-pip \
+    ipython3 \
+    python3-dev \
+    python3-numpy \
+    python3-scipy \
+    python3-matplotlib \
+    python3-setuptools \
+    python3-setuptools-scm \
+    swig \
 	&& apt-get clean -q -y \
 	&& apt-get autoremove -q -y \
 	&& rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \
+    && pip install --no-cache-dir fastapi uvicorn uvicorn[standard]
 
 #RUN apt-get update \
 #&& python3 -m pip install --upgrade pip setuptools setuptools_scm wheel
@@ -129,6 +132,10 @@ RUN /bin/bash -c "echo 'source /opt/ros/humble/setup.bash' >> $HOME/.bashrc"
 
 RUN mkdir -p $HOME/catkin_ws/src
 WORKDIR $HOME/catkin_ws/
+
+
+RUN sudo apt-get update && \
+    sudo apt-get install -y netbase iputils-ping telnet
 
 ENV ACADOS_SOURCE_DIR=${HOME}/acados
 ENV CASADI_SOURCE_DIR=${HOME}/casadi
