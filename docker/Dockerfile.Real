@@ -38,7 +38,8 @@ RUN apt-get update && \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
-    && pip install --no-cache-dir fastapi uvicorn uvicorn[standard]
+    && pip install --no-cache-dir fastapi uvicorn uvicorn[standard] \
+    && ln -s /usr/bin/python3 /usr/bin/python 
 
 #RUN apt-get update \
 #&& python3 -m pip install --upgrade pip setuptools setuptools_scm wheel
@@ -108,37 +109,22 @@ RUN sudo apt-get update \
 && pip3 install -e .
 
 RUN sudo apt-get update \
-&& git clone https://github.com/bitcraze/crazyflie-clients-python.git \
-&& cd $HOME/crazyflie-clients-python \
-&& pip3 install -e .
+    && git clone https://github.com/bitcraze/crazyflie-clients-python.git \
+    && cd $HOME/crazyflie-clients-python \
+    && pip3 install -e .
 
-# RUN sudo apt-get update \
-# && git clone https://github.com/PointCloudLibrary/pcl.git \
-# && cd $HOME/pcl \
-# && mkdir build && cd build \
-# && cmake .. 
-# && sudo make install -j7
 
-# COPY repos/ros-requirements.txt /tmp
-# RUN sudo apt-get update && \
-#     sudo apt-get install -q -y --no-install-recommends \
-#     $(cat /tmp/ros-requirements.txt | xargs) && \
-#     sudo apt-get clean -q -y && \
-#     sudo apt-get autoremove -q -y && \
-#     sudo rm -rf /var/lib/apt/lists/* && \
-#     sudo rm /tmp/ros-requirements.txt
-    
 RUN /bin/bash -c "echo 'source /opt/ros/humble/setup.bash' >> $HOME/.bashrc"
 
 RUN mkdir -p $HOME/catkin_ws/src
 WORKDIR $HOME/catkin_ws/
 
-
-RUN sudo apt-get update && \
-    sudo apt-get install -y netbase iputils-ping telnet
+# RUN sudo apt-get update && \
+#     sudo apt-get install -y netbase iputils-ping telnet
 
 ENV ACADOS_SOURCE_DIR=${HOME}/acados
 ENV CASADI_SOURCE_DIR=${HOME}/casadi
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:"${CASADI_SOURCE_DIR}/build/lib"
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:"${ACADOS_SOURCE_DIR}/lib"
+ENV PATH=${PATH}:${HOME}/.local/bin
 

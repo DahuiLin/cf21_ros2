@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo docker build --tag "ros_humble:latest" -f Dockerfile ..
+sudo docker build --tag "ros_humble_cf21:latest" -f Dockerfile.GazeboSim ..
