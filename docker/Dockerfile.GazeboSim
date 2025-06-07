@@ -65,6 +65,11 @@ RUN apt-get update && \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \ 
+    apt -y install qtbase5-dev libqt5svg5-dev libqt5websockets5-dev \
+    libqt5opengl5-dev libqt5x11extras5-dev libprotoc-dev libzmq3-dev \
+    liblz4-dev libzstd-dev
+
 RUN apt-get update && \
     apt-get install -y wget && \
     wget https://github.com/Kitware/CMake/releases/download/v3.21.0/cmake-3.21.0-linux-x86_64.sh && \
@@ -87,29 +92,30 @@ RUN sudo apt-get update \
 RUN sudo apt-get update \
 && pip3 install -e ${HOME}/acados/interfaces/acados_template
 
-RUN sudo apt-get update \
-&& git clone https://github.com/OctoMap/octomap.git \
-&& cd $HOME/octomap/octomap \
-&& mkdir build && cd build \
-&& cmake .. \	
-&& sudo make install -j4
+# RUN sudo apt-get update \
+# && git clone https://github.com/OctoMap/octomap.git \
+# && cd $HOME/octomap/octomap \
+# && mkdir build && cd build \
+# && cmake .. \	
+# && sudo make install -j4
 
-RUN sudo apt-get update \
-&& cd $HOME/octomap/dynamicEDT3D \
-&& mkdir build && cd build \
-&& cmake .. \
-&& sudo make install -j4
+# RUN sudo apt-get update \
+# && cd $HOME/octomap/dynamicEDT3D \
+# && mkdir build && cd build \
+# && cmake .. \
+# && sudo make install -j4
+
+# RUN sudo apt-get update \
+# && git clone https://github.com/facontidavide/PlotJuggler.git ~/plotjuggler_ws/src/PlotJuggler \
+# && cd ~/plotjuggler_ws \
+# && cmake -S src/PlotJuggler -B build/PlotJuggler -DCMAKE_INSTALL_PREFIX=install \
+# && cmake --build build/PlotJuggler --config RelWithDebInfo --target install
+
+
 
 RUN sudo apt install -y libxcb-xinerama0 libxcb-cursor0 \
 && pip3 install --upgrade pip
 
-
-RUN sudo apt-get update && \
-    git clone https://github.com/gtfactslab/CrazySim.git --recursive && \
-    cd CrazySim && \
-    cd crazyflie-lib-python && \
-    pip3 install -e .
-    
 
 RUN sudo apt-get update && \
     sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
@@ -117,7 +123,12 @@ RUN sudo apt-get update && \
     sudo apt-get update && \
     sudo apt-get install gz-garden -y
 
-
+RUN sudo apt-get update && \
+    git clone https://github.com/gtfactslab/CrazySim.git --recursive && \
+    cd CrazySim && \
+    cd crazyflie-lib-python && \
+    pip3 install -e .
+    
 RUN sudo apt-get update && \
     cd CrazySim && \
     cd crazyflie-firmware && \
@@ -137,8 +148,27 @@ RUN sudo apt-get update \
 RUN sudo apt-get update \
     && sudo apt install ros-humble-ros-gzgarden -y 
 
+
+RUN sudo apt-get update && \
+    rosdep update
+
+RUN sudo apt-get update && \
+    mkdir -p $HOME/ws_plotjuggler/src && \
+    cd $HOME/ws_plotjuggler/src && \
+    git clone https://github.com/PlotJuggler/plotjuggler-ros-plugins.git && \
+    cd plotjuggler-ros-plugins && \
+    git checkout humble && \
+    cd $HOME/ws_plotjuggler && \
+    rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y 
+    
 RUN /bin/bash -c "echo 'source /opt/ros/humble/setup.bash' >> $HOME/.bashrc"
 
+
+RUN bash -c "source /opt/ros/humble/setup.bash && \
+    cd /home/isa/ws_plotjuggler && \
+    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release && \
+    echo 'source /home/isa/ws_plotjuggler/install/setup.bash' >> /home/isa/.bashrc"
+    
 RUN mkdir -p $HOME/catkin_ws/src
 WORKDIR $HOME/catkin_ws/
 
