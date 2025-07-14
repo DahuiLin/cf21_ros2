@@ -113,14 +113,13 @@ RUN sudo apt-get update \
     && cd $HOME/crazyflie-clients-python \
     && pip3 install -e .
 
-
 RUN /bin/bash -c "echo 'source /opt/ros/humble/setup.bash' >> $HOME/.bashrc"
 
 RUN mkdir -p $HOME/catkin_ws/src
 WORKDIR $HOME/catkin_ws/
 
-# RUN sudo apt-get update && \
-#     sudo apt-get install -y netbase iputils-ping telnet
+RUN sudo apt-get update && \
+    sudo apt-get install -y netbase iputils-ping telnet
 
 ENV ACADOS_SOURCE_DIR=${HOME}/acados
 ENV CASADI_SOURCE_DIR=${HOME}/casadi
